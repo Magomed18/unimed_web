@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЮниМед</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+    <a class="brand" href="/">
+        ЮниМед
+    </a>
+
+    <nav class="site-nav" aria-label="Основная навигация">
+    <a href="#services">Услуги и цены</a>
+    <a href="#doctors">Врачи</a>
+    <a href="#about">О клинике</a>
+    <a href="#contacts">Контакты</a>
+</nav>
+    </header>
+
+    <main>
+        <section class="hero">
+        <div class="hero-content">
+            <h1>ЮниМед</h1>
+
+            <p>
+                Узнайте об услугах и врачах.
+                Позвоните в регистратуру, чтобы записаться на приём.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary"
+                href="tel:PHONE_NUMBER">
+                    Позвонить
+                </a>
+
+            </div>
+        </div>
+
+        <div class="hero-photo">
+            <img
+                src="{{ url_for('static', filename='pics/main_uni.jpg') }}"
+                alt="Клиника «ЮниМед»"
+    >
+        </div>
+        </section>
+
+        <section class="content-section" id="services">
+        <div class="section-heading">
+            <h2>Услуги и цены</h2>
+            <p>Основные направления приёма в нашей клинике.</p>
+        </div>
+
+        <div class="services-grid">
+            {% for service in services %}
+                <article class="service-card">
+                    <h3>{{ service.name }}</h3>
+                    <p>{{ service.description }}</p>
+                    <p class="service-price">{{ service.price }}</p>
+                </article>
+            {% endfor %}
+        </div>
+        </section>
+
+        <section class="content-section" id="doctors">
+        <div class="section-heading">
+            <h2>Наши врачи</h2>
+            <p>Познакомьтесь со специалистами клиники.</p>
+        </div>
+
+        <div class="doctors-grid">
+            {% for doctor in doctors %}
+                <article class="doctor-card">
+
+                    {% if doctor.photo %}
+                        <img
+                            class="doctor-photo"
+                            src="{{ url_for('static', filename='pics/' ~ doctor.photo) }}"
+                            alt="{{ doctor.name }}"
+                            width="72"
+                            height="72"
+                            loading="lazy"
+                        >
+                    {% else %}
+                        <div class="doctor-photo" aria-hidden="true">
+                            Фото
+                        </div>
+                    {% endif %}
+
+                    <div class="doctor-info">
+                        <h3>{{ doctor.name }}</h3>
+                        <p>{{ doctor.specialty }}</p>
+                        {% if doctor.info %}
+                            <ul class="doctor-detail">
+                                {% for detail in doctor.info.splitlines() if detail.strip() %}
+                                    <li>{{ detail.strip() }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                </article>
+            {% endfor %}
+        </div>
+        </section>
+
+        <section class="content-section" id="about">
+        <div class="section-heading">
+            <h2>О клинике</h2>
+        </div>
+
+        <div class="about-text">
+            <p>
+                Клиника "ЮниМед" расположена в центре города Гудермес, на переулке Переходный, 61Б. Мы предлагаем широкий спектр медицинских услуг, включая терапию, хирургию и диагностику. Наши специалисты имеют большой опыт работы и постоянно повышают свою квалификацию.
+            </p>
+
+            <p>
+                Для первого посещения рекомендуем прийти за 15 минут до назначенного времени. Не забудьте, пожалуйста, взять с собой паспорт.
+            </p>
+        </div>
+        </section>
+
+        <section class="content-section" id="contacts">
+        <div class="section-heading">
+            <h2>Как нас найти</h2>
+            <p>Свяжитесь с регистратурой, чтобы уточнить время приёма.</p>
+        </div>
+
+        <div class="contacts-grid">
+            <div class="contact-card">
+                <address class="clinic-address">
+                <span class="contact-label">Адрес</span>
+                <p>г. Гудермес, переулок Переходный, 61Б</p>
+
+                <span class="contact-label">Регистратура</span>
+                <a class="contact-phone" href="tel:+79286440440">
+                    +7 (928) 644-04-40
+                </a>
+
+                <span class="contact-label">Электронная почта</span>
+                <a href="mailto:UnimedClinic@mail.ru">
+                    UnimedClinic@mail.ru
+                </a>
+                </address>
+
+                <div class="opening-hours">
+                    <h3>Часы работы</h3>
+
+                    <dl class="hours-list">
+                        <div>
+                            <dt>Пн–Пт</dt>
+                            <dd>09:00–18:00</dd>
+                        </div>
+
+                        <div>
+                            <dt>Суббота</dt>
+                            <dd>09:00–16:00</dd>
+                        </div>
+
+                        <div>
+                            <dt>Воскресенье</dt>
+                            <dd>Выходной</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="clinic-map">
+        <!--         <div style="position:relative;overflow:hidden;"><a href="https://yandex.ru/maps/11026/gudermes/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Гудермес</a><a href="https://yandex.ru/maps/11026/gudermes/?ll=46.109640%2C43.341753&mode=routes&rtext=43.343716%2C46.104499~43.338291%2C46.106018&rtt=auto&ruri=ymapsbm1%3A%2F%2Forg%3Foid%3D69358551857~ymapsbm1%3A%2F%2Forg%3Foid%3D176794792359&utm_medium=mapframe&utm_source=maps&z=16.66" style="color:#eee;font-size:12px;position:absolute;top:14px;">Яндекс Карты</a>
+                    <iframe src="https://yandex.ru/map-widget/v1/?ll=46.109640%2C43.341753&mode=routes&rtext=43.343716%2C46.104499~43.338291%2C46.106018&rtt=auto&ruri=ymapsbm1%3A%2F%2Forg%3Foid%3D69358551857~ymapsbm1%3A%2F%2Forg%3Foid%3D176794792359&z=16.66" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div> -->
+                <iframe
+                    src="https://yandex.ru/map-widget/v1/?ll=46.109875%2C43.340285&mode=routes&rtext=43.343716%2C46.104500~43.338292%2C46.106020&rtt=auto&ruri=ymapsbm1%3A%2F%2Forg%3Foid%3D69358551857~ymapsbm1%3A%2F%2Forg%3Foid%3D176794792359&z=16.4"
+                    title="Клиника ЮНИМЕД на Яндекс Картах"
+                    loading="lazy"
+                    allowfullscreen
+                ></iframe>
+            </div>
+        </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>ЮниМед - 2026</p>
+    </footer>
+</body>
+</html>
